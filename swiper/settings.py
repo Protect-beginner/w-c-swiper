@@ -118,13 +118,6 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-# 腾讯云配置
-TENCENT_SECERT_ID = "AKIDjt2vXsAc2GOkpdpMq43yzjiQ5QYGcvvb"
-TENCENT_SECERT_KEY = "kEdBdpnVxJOUFm33oOr3xoNgiW2Sbx4u"
-TENCENT_CITY = "ap-guangzhou"
-TENCENT_APPID = "1400405740"
-TENCENT_SIGN = "Outlierwu"
-TENCENT_TEMPLATEID = "677320"
 
 try:
     from .other_config.py import *
