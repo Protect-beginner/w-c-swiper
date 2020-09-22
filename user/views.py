@@ -1,24 +1,31 @@
 from django.shortcuts import render
 import random
-import re
+
+import redis
 
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.exceptions import ValidationError
 
 from common.tencent.sms import send_message
+from user.models import UserModel
+from user.serializers.account import FetchSerializer, SubmitSerializer, LoginSerializer
 
 
 class FetchView(APIView):
     '''提交手机号'''
 
     def get(self, request):
-        phonenum = request.query_params.get("phonenum")
-        if not re.match(r'^(1[3|5|6|7|8|9])\d{9}$', phonenum):
-            raise ValidationError("手机号格式错误")
+        # 不能直接传入request.query_params.get("phonenum"),要传入字典
+        res = FetchSerializer(data=request.query_params)
+        res.is_valid(raise_exception=True)
         vcode = random.randint(100000, 999999)
-        # send_message(phonenum, vcode)
         print(vcode)
+        phonenum = res.validated_data.get("phonenum")
+        # send_message(phonenum, vcode)
+        conn = redis.Redis(host="127.0.0.1", port=6379, db=0)
+        conn.set(phonenum, vcode, ex=180)
+
         return Response({"code": 0, "data": ""})
 
 
@@ -36,5 +43,19 @@ class SubmitView(APIView):
     '''
 
     def post(self, request):
-        phonenum = request.data.get("phonenum")
-        vcode = request.data.get("vcode")
+        ser = SubmitSerializer(data=request.data)
+        ser.is_valid(raise_exception=True)
+        phonenum = ser.validated_data.get("phonenum")
+        res = UserModel.objects.filter(phonenum=phonenum).first()
+        if not res:
+            dic = {
+                "phonenum": phonenum,
+                "nickname": phonenum,
+                "gender": 1,
+                "birthday": "2000-01-01",
+                "location": "上海市宝山区",
+            }
+            UserModel.objects.create(phonenum=phonenum, nickname=phonenum)
+            return Response({"code": 0, "data": dic})
+        serializer = LoginSerializer(instance=res)
+        return Response({"code": 0, "data": serializer.data})

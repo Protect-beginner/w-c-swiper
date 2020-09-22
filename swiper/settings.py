@@ -116,6 +116,6 @@ USE_TZ = False
 STATIC_URL = '/static/'
 
 try:
-    from .other_config.py import *
+    from .other_config import *
 except ImportError:
     pass
