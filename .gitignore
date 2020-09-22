@@ -133,3 +133,4 @@ dmypy.json
 .vscode/
 .DS_Stor
 swiper/other_config.py
+db.sqlite3
