@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
@@ -27,7 +26,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -37,6 +35,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'user',
 ]
 
 MIDDLEWARE = [
@@ -69,21 +68,28 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'swiper.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
+# 数据库配置
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'swiper',
-        'USER': 'wu',
-        'PASSWORD': '@19960518wyJ',
-        'HOST': '106.14.222.135',
-        'PORT': '3306',
+        'ENGINE': 'django.db.backends.mysql',  # 数据库引擎名
+        'NAME': 'swiper',  # database名
+        'USER': 'juzi',  # 数据库的用户名
+        'PASSWORD': '666',  # 数据库的密码
+        'HOST': '101.132.34.197',  # 服务器地址
+        'PORT': 3306  # 端口号
     }
 }
 
+# 邮箱配置
+EMAIL_HOST = 'smtp.126.com'  # 邮箱的服务器
+EMAIL_HOST_USER = 'zhebushijuzi@126.com'  # 发邮件的邮箱
+EMAIL_HOST_PASSWORD = 'PLZJKJNSRRLCGGJD'  # 授权码
+EMAIL_PORT = 465  # 端口号
+EMAIL_USE_TLS = False  # http协议 端口号：25
+EMAIL_USE_SSL = True  # 126，qq端口号：465 163端口号:454 https协议
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -103,7 +109,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
@@ -116,7 +121,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = False
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
