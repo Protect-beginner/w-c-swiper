@@ -2,7 +2,7 @@ import redis
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from user.models import UserModel
+from user.models import UserModel, UserConfig
 from user.serializers.validataors import check_phone
 
 
@@ -12,7 +12,7 @@ class FetchSerializer(serializers.Serializer):
 
 
 class SubmitSerializer(serializers.Serializer):
-    '''登录/注册序列化器'''
+    '''登录/注册序列化器1'''
     phonenum = serializers.CharField(label="手机号", validators=[check_phone, ])
     vcode = serializers.CharField(label="验证码")
 
@@ -32,6 +32,14 @@ class SubmitSerializer(serializers.Serializer):
 
 
 class LoginSerializer(serializers.ModelSerializer):
+    '''登录/注册序列化器2'''
     class Meta:
         model = UserModel
+        fields = "__all__"
+
+
+class UserConfigSerializer(serializers.ModelSerializer):
+    '''用户配置序列化器'''
+    class Meta:
+        model = UserConfig
         fields = "__all__"
