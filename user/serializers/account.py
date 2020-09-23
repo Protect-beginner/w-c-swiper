@@ -1,4 +1,7 @@
 import redis
+
+from django.core.cache import cache
+
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
@@ -21,12 +24,12 @@ class SubmitSerializer(serializers.Serializer):
             raise ValidationError("验证码位数错误")
         if not vcode.isdecimal():
             raise ValidationError("验证码格式错误")
-        conn = redis.Redis(host="127.0.0.1", port=6379, db=0)
         phonenum = self.initial_data.get("phonenum")
-        res = conn.get(phonenum)
+        key = "Vcode-%s" % phonenum
+        res = cache.get(key)
         if not res:
             raise ValidationError("验证码失效")
-        if res.decode("utf8") != vcode:
+        if res != vcode:
             raise ValidationError("验证码错误")
         return vcode
 
