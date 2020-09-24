@@ -1,7 +1,3 @@
-import redis
-
-from django.core.cache import cache
-
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -19,7 +15,7 @@ class FetchView(APIView):
         res.is_valid(raise_exception=True)
         phonenum = res.validated_data.get("phonenum")
         send_msg(phonenum)
-        return Response({"code": 0, "data": ""})
+        return Response({"code": 0, "data": None})
 
 
 class SubmitView(APIView):
@@ -29,15 +25,13 @@ class SubmitView(APIView):
         ser = SubmitSerializer(data=request.data)
         ser.is_valid(raise_exception=True)
         phonenum = ser.validated_data.get("phonenum")
-        res = UserModel.objects.filter(phonenum=phonenum).first()
-        if not res:
+        try:
+            # 有则登录，无的注册
+            user = UserModel.objects.get(phonenum=phonenum)
+        except UserModel.DoesNotExist:
             user = UserModel.objects.create(phonenum=phonenum, nickname=phonenum)
-            UserConfig.objects.create()
-            request.session['uid'] = user.id
-            serializer = LoginSerializer(instance=user)
-            return Response({"code": 0, "data": serializer.data})
-        serializer = LoginSerializer(instance=res)
-        request.session['uid'] = res.id
+        request.session["uid"] = user.id
+        serializer = LoginSerializer(instance=user)
         return Response({"code": 0, "data": serializer.data})
 
 
@@ -46,8 +40,8 @@ class ProfileShowView(APIView):
 
     def get(self, request):
         userid = request.session.get("uid")
-        res = UserConfig.objects.get(pk=userid)
-        serializer = UserConfigSerializer(instance=res)
+        _res, _ = UserConfig.objects.get_or_create(id=userid)
+        serializer = UserConfigSerializer(instance=_res)
         return Response({"code": 0, "data": serializer.data})
 
 
@@ -55,14 +49,20 @@ class ProfileUpdateView(APIView):
     '''修改用户配置'''
 
     def post(self, request):
-        conn = redis.Redis(host="127.0.0.1", port=6379, db=0)
-        userid = int(conn.get("loginer").decode("utf8"))
-        user = UserConfig.objects.get(pk=userid)
-        print(user.max_distance)
-        res = request.data
-        for key in res:
-            # print(key)
-            user.key = res.key
-        # user.save()
-        return Response({"code": 0, "data": ""})
+        datas = request.data
 
+        user_serializer = LoginSerializer(data=datas)
+        config_serializer = UserConfigSerializer(data=datas)
+        is_user_serializer = user_serializer.is_valid()
+        is_config_serializer = config_serializer.is_valid()
+
+        if is_user_serializer and is_config_serializer:
+            userid = request.session.get("uid")
+            UserModel.objects.filter(id=userid).update(**user_serializer.validated_data)
+            UserConfig.objects.update_or_create(id=userid, defaults=config_serializer.validated_data)
+            return Response({"code": 0, "data": None})
+        else:
+            res = {}
+            res.update(user_serializer.errors)
+            res.update(config_serializer.errors)
+            return Response({"code": 1003, "data": res})

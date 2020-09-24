@@ -10,12 +10,12 @@ from user.serializers.validataors import check_phone
 
 
 class FetchSerializer(serializers.Serializer):
-    '''发送短信序列化器'''
+    '''手机号序列化器'''
     phonenum = serializers.CharField(label="手机号", validators=[check_phone, ])
 
 
 class SubmitSerializer(serializers.Serializer):
-    '''登录/注册序列化器1'''
+    '''发送短信序列化器'''
     phonenum = serializers.CharField(label="手机号", validators=[check_phone, ])
     vcode = serializers.CharField(label="验证码")
 
@@ -35,14 +35,23 @@ class SubmitSerializer(serializers.Serializer):
 
 
 class LoginSerializer(serializers.ModelSerializer):
-    '''登录/注册序列化器2'''
+    '''登录/注册序列化器'''
+
     class Meta:
         model = UserModel
-        fields = "__all__"
+        fields = ['nickname', 'gender', 'birthday', 'location']
 
 
 class UserConfigSerializer(serializers.ModelSerializer):
     '''用户配置序列化器'''
+
     class Meta:
         model = UserConfig
         fields = "__all__"
+
+    def validate(self, attrs):
+        if float(self.initial_data["max_distance"]) < float(self.initial_data["min_distance"]):
+            raise serializers.ValidationError("最大距离不得小于最小距离")
+        elif int(self.initial_data["max_dating_age"]) < int(self.initial_data["min_dating_age"]):
+            raise serializers.ValidationError("最大年龄不得小于最小年龄")
+        return attrs
