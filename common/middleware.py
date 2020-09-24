@@ -4,6 +4,7 @@ from rest_framework.response import Response
 
 class AuthMiddleware(MiddlewareMixin):
     white_list = [
+        '/',
         '/api/user/vcode/fetch',
         '/api/user/vcode/submit',
         '/qiniu/callback'
