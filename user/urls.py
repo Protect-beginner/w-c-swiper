@@ -8,4 +8,6 @@ urlpatterns = [
     path('vcode/submit', apis.SubmitView.as_view()),
     path('profile/show', apis.ProfileShowView.as_view()),
     path('profile/update', apis.ProfileUpdateView.as_view()),
+    path('qiniu/token', apis.QnTokenView.as_view()),
+    path('qiniu/callback', apis.QnCallbackView.as_view()),
 ]

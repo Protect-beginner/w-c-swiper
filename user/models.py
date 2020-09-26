@@ -18,7 +18,7 @@ class UserModel(models.Model):
     gender = models.CharField(max_length=16, choices=(("male", "男"), ("female", "女")), default="male",
                               verbose_name="性别", help_text="性别")
     birthday = models.DateField(verbose_name="生日", help_text="生日", default="2020-01-01")
-    # avatar = models.CharField(max_length=256,verbose_name="个人形象")
+    avatar = models.CharField(max_length=256,verbose_name="个人形象",default="")
     location = models.CharField(choices=LOCATIONS, max_length=64, verbose_name="常居地", help_text="常居地", default="上海")
 
     class Meta:

@@ -18,6 +18,12 @@ DATABASES = {
 #     }
 # }
 
-
+# 七牛云配置
+QN_DOMAIN = 'qh6tx5nfy.hd-bkt.clouddn.com'
+QN_BUCKET = 'oulierwu'
+QN_ACCESS_KEY = 'Pwm87MIIP6ePq-p_quhCjwvypkElsMlvduWeJ3DC'
+QN_SECRET_KEY = 'Ex-aN47vta4fqpOCn5rvoqKBqqrTX-gev7r-XB-my'
+QN_CALLBACK_URL = 'http://106.14.222.135/qiniu/callback'
+QN_CALLBACK_DOMAIN = '106.14.222.135'
 
 

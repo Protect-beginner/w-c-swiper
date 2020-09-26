@@ -1,6 +1,7 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from common.qiniu.qn_cloud import gen_token, get_res_url
 from user.logics import send_msg
 from user.models import UserModel, UserConfig
 from user.serializers.account import FetchSerializer, SubmitSerializer, LoginSerializer, UserConfigSerializer
@@ -66,3 +67,24 @@ class ProfileUpdateView(APIView):
             res.update(user_serializer.errors)
             res.update(config_serializer.errors)
             return Response({"code": 1003, "data": res})
+
+
+class QnTokenView(APIView):
+    '''七牛云分发Token'''
+
+    def post(self, request):
+        uid = request.session["uid"]
+        filename = f"Avatar-{uid}"
+        token = gen_token(uid, filename)
+        return Response({"code": 0, "data": {"token": token, "key": filename}})
+
+
+class QnCallbackView(APIView):
+    '''七牛云回调'''
+
+    def post(self, request):
+        uid = request.data.get("uid")
+        key = request.data.get("key")
+        avatar_url = get_res_url(key)
+        UserModel.objects.filter(id=uid).update(avatar=avatar_url)
+        return Response({"code": 0, "data": avatar_url})
