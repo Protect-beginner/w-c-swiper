@@ -1,4 +1,3 @@
-from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from common.qiniu.qn_cloud import gen_token, get_res_url
