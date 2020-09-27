@@ -43,6 +43,7 @@ class ProfileShowView(APIView):
         userid = request.session.get("uid")
         _res, _ = UserConfig.objects.get_or_create(id=userid)
         serializer = UserConfigSerializer(instance=_res)
+        print(serializer.data, "--------")
         return Response({"code": 0, "data": serializer.data})
 
 
@@ -72,7 +73,7 @@ class ProfileUpdateView(APIView):
 class QnTokenView(APIView):
     '''七牛云分发Token'''
 
-    def post(self, request):
+    def get(self, request):
         uid = request.session["uid"]
         filename = f"Avatar-{uid}"
         token = gen_token(uid, filename)
@@ -85,6 +86,7 @@ class QnCallbackView(APIView):
     def post(self, request):
         uid = request.data.get("uid")
         key = request.data.get("key")
+        print(uid, key)
         avatar_url = get_res_url(key)
         UserModel.objects.filter(id=uid).update(avatar=avatar_url)
         return Response({"code": 0, "data": avatar_url})

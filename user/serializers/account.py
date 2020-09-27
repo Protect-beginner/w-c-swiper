@@ -1,12 +1,9 @@
-import redis
-
-from django.core.cache import cache
-
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
 from user.models import UserModel, UserConfig
 from user.serializers.validataors import check_phone
+from common.cache import rds
 
 
 class FetchSerializer(serializers.Serializer):
@@ -26,7 +23,7 @@ class SubmitSerializer(serializers.Serializer):
             raise ValidationError("验证码格式错误")
         phonenum = self.initial_data.get("phonenum")
         key = "Vcode-%s" % phonenum
-        res = cache.get(key)
+        res = rds.get(key)
         if not res:
             raise ValidationError("验证码失效")
         if res != vcode:

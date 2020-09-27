@@ -1,6 +1,6 @@
 import random
 
-from django.core.cache import cache
+from common.cache import rds
 
 from common.tencent.sms import send_message
 
@@ -16,11 +16,11 @@ def send_msg(phone):
     # 这里不同的模块存入缓存中要设置不同的前缀key
     key = 'Vcode-%s' % phone
     # 防止用户短时间多次发送信息
-    if cache.get(key):
-        print(cache.get(key), "++++++")
+    if rds.get(key):
+        print(rds.get(key), "++++++")
         return True
     vcode = rand_code()
     print(vcode)
-    cache.set(key, vcode, 600)
+    rds.set(key, vcode, 600)
     # return send_message(phone, vcode)
     return True
