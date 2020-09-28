@@ -33,6 +33,7 @@ class SubmitView(APIView):
             user = UserModel.objects.create(phonenum=phonenum, nickname=phonenum)
         request.session["uid"] = user.id
         serializer = LoginSerializer(instance=user)
+        print(serializer.data,"+++++++")
         return rend_json(data=serializer.data)
 
 
@@ -43,7 +44,6 @@ class ProfileShowView(APIView):
         userid = request.session.get("uid")
         _res, _ = UserConfig.objects.get_or_create(id=userid)
         serializer = UserConfigSerializer(instance=_res)
-        print(serializer.data, "--------")
         return rend_json(data=serializer.data)
 
 

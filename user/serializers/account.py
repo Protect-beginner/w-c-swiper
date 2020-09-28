@@ -36,7 +36,7 @@ class LoginSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserModel
-        fields = ['nickname', 'gender', 'birthday', 'location']
+        fields = ['nickname', 'gender', 'birthday', 'avatar', 'location']
 
 
 class UserConfigSerializer(serializers.ModelSerializer):

@@ -36,6 +36,17 @@ class UserModel(models.Model):
             self._userconfig, _ = UserConfig.objects.get_or_create(id=self.id)
         return self._userconfig
 
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'phonenum': self.phonenum,
+            'nickname': self.nickname,
+            'gender': self.gender,
+            'birthday': str(self.birthday),
+            'avatar': self.avatar,
+            'location': self.location,
+        }
+
 
 class UserConfig(models.Model):
     '''用户配置'''

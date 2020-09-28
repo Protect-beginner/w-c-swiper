@@ -21,7 +21,8 @@ from user import apis
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', view.index),
-    path('api/user/', include("user.urls")),
+    path('api/user/', include('user.urls')),
     path('qiniu/token', apis.QnTokenView.as_view()),
     path('qiniu/callback', apis.QnCallbackView.as_view()),
+    path('api/social/', include('social.urls'))
 ]
