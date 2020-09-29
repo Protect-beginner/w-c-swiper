@@ -40,3 +40,14 @@ class Friend(models.Model):
 
     class Meta:
         unique_together = ["uid1", "uid2"]
+
+    @classmethod
+    def make_friends(cls, uid1, uid2):
+        '''创建好友关系'''
+        uid1, uid2 = (uid2, uid1) if uid1 > uid2 else (uid1, uid2)  # 调整两者位置
+        return cls.objects.create(uid1=uid1, uid2=uid2)
+
+    @classmethod
+    def break_out(cls, uid1, uid2):
+        uid1, uid2 = (uid2, uid1) if uid1 > uid2 else (uid1, uid2)
+        cls.objects.filter(uid1=uid1, uid2=uid2).delete()

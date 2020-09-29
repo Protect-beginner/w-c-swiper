@@ -16,6 +16,14 @@ REDIS = {
     'db': 2,
 }
 
+#  腾讯云短信配置
+TENCENT_SECERT_ID = "AKIDjt2vXsAc2GOkpdpMq43yzjiQ5QYGcvvb"
+TENCENT_SECERT_KEY = "kEdBdpnVxJOUFm33oOr3xoNgiW2Sbx4u"
+TENCENT_CITY = "ap-guangzhou"
+TENCENT_APPID = "1400405740"
+TENCENT_SIGN = "Outlierwu"
+TENCENT_TEMPLATEID = "677320"
+
 # 七牛云配置
 QN_DOMAIN = 'qh6tx5nfy.hd-bkt.clouddn.com'
 QN_BUCKET = 'outlierwu'
@@ -24,4 +32,7 @@ QN_SECRET_KEY = 'Ex-aN47vta4fqpOCn5rvoqKBqqrTX-gev7r-XB-m'
 QN_CALLBACK_URL = 'http://106.14.222.135/qiniu/callback'
 QN_CALLBACK_DOMAIN = '106.14.222.135'
 
+# 反悔功能相关配置
+REWIND_TIMES = 3         # 每日反悔次数
+REWIND_TIMEOUT = 5 * 60  # 反悔超时时间
 

@@ -3,6 +3,7 @@ from social.logics import rcmd
 from social.logics import like_someone
 from social.logics import super_like_someone
 from social.logics import dislike_someone
+from social.logics import rewind_last_swipe
 
 
 def rcmd_users(request):
@@ -29,7 +30,14 @@ def super_like(request):
 
 
 def dislike(request):
+    '''不喜欢某人'''
     uid = request.session["uid"]
     sid = int(request.POST.get("sid"))
     res = dislike_someone(uid, sid)
+    return rend_json()
+
+
+def rewind(request):
+    '''反悔'''
+    rewind_last_swipe(request.session["uid"])
     return rend_json()
