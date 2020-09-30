@@ -17,12 +17,7 @@ REDIS = {
 }
 
 #  腾讯云短信配置
-TENCENT_SECERT_ID = "AKIDjt2vXsAc2GOkpdpMq43yzjiQ5QYGcvvb"
-TENCENT_SECERT_KEY = "kEdBdpnVxJOUFm33oOr3xoNgiW2Sbx4u"
-TENCENT_CITY = "ap-guangzhou"
-TENCENT_APPID = "1400405740"
-TENCENT_SIGN = "Outlierwu"
-TENCENT_TEMPLATEID = "677320"
+
 
 # 七牛云配置
 QN_DOMAIN = 'qh6tx5nfy.hd-bkt.clouddn.com'
